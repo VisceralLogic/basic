@@ -2,19 +2,16 @@
 Tutorial on using flex/bison to build a BASIC interpreter
 
 ## grammar
-lines: /* empty */  
-  | line  
-  | lines line  
-  ;
-
-line: LINENUM statement  
+statements: /* empty */  
   | statement  
+  | statements statement  
   ;
   
 statement: iStatement  
-  | forStmt  
-  | nextStmt  
-  | endStmt  
+  | LINENUM iStatement  
+  | LINENUM forStmt  
+  | LINENUM nextStmt  
+  | LINENUM endStmt  
   ;
 
 iStatement: letStmt  
@@ -41,6 +38,25 @@ exprsAndLabels: exprOrLabel
 exprOrLabel: expr  
   | STRING  
   ;
+  
+expr: addend  
+  | addend '+' addend  
+  | addend '-' addend  
+  ;
+  
+addend: multiplicand  
+  | multiplicand '*' multiplicand  
+  | multiplicand '/' multiplicand  
+  ;
+  
+multiplicand: expt  
+  | expt '^' expt  
+  ;
+  
+expt: NUM  
+  | ID  
+  | '(' expr ')'  
+  ;
 
 letStmt: "LET" ID '=' expr;
 
@@ -52,4 +68,20 @@ printStmt: "PRINT" exprsAndLabels;
 
 gotoStmt: "GOTO" LINENUM;
 
-ifStmt: "IF" expr rel expr "THEN" LINENUM;
+ifStmt: "IF" relExpr "THEN" LINENUM;
+
+relExpr: expr '=' expr  
+  | expr '<' expr  
+  | expr '>' expr  
+  | expr ">=" expr  
+  | expr "<=" expr  
+  | expr "<>" expr  
+  ;
+  
+forStmt: "FOR" ID '=' expr "TO" expr  
+  | "FOR" ID '=' expr "TO" expr "STEP" expr  
+  ;
+  
+nextStmt: "NEXT" ID;  
+
+endStmt: "END";
