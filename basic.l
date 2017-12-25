@@ -1,3 +1,5 @@
+%option noyywrap
+
 %{
 #include <cstdio>
 using namespace std;
