@@ -6,7 +6,7 @@ using std::endl;
 using std::cout;
 
 // constructor for Print class
-Print::Print(const std::vector<Expression> exprList){
+Print::Print(const std::vector<Expression>& exprList){
 	this->exprList = exprList;
 }
 
