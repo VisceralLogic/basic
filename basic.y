@@ -6,8 +6,6 @@
 #include <vector>
 #include <string>
 
-using namespace std;
-
 extern "C" int yylex();
 extern "C" int yyparse();
 extern "C" FILE *yyin;
@@ -16,6 +14,8 @@ void yyerror(const char *s);
 
 #include "basic.h"
 #include "expression.h"
+#include "stringexpression.h"
+#include "doubleexpression.h"
 #include "print.h"
 #include "program.h"
 
@@ -24,8 +24,11 @@ void yyerror(const char *s);
 // token type definition
 %union {
 	int iVal;
+	double dVal;
 	char *sVal;
 	Program *progVal;
+	Expression *eVal;
+	std::vector<Expression*> *eList;
 }
 
 // constant tokens
@@ -33,13 +36,17 @@ void yyerror(const char *s);
 %token RUN
 %token ENDL
 %token LIST
+%token COMMA
 
 // terminal symbols
 %token <iVal> LINE
 %token <sVal> STRING
+%token <dVal> DOUBLE
 
 // non-terminal symbols
 %type <progVal> program 
+%type <eList> exprList
+%type <eVal> expr
 
 %% /* Grammar rules and actions follow */
 
@@ -54,23 +61,36 @@ line:
 ;
 
 stmt:
-	LINE program		{ Basic::instance()->add($1, $2); }
+	LINE				{ Basic::instance()->remove($1); }
+	| LINE program		{ Basic::instance()->add($1, $2); }
 	| RUN				{ Basic::instance()->execute(); }
 	| LIST				{ Basic::instance()->list(); }
 ;
 
 program:
-	PRINT STRING		{
-							Expression e($2);
-							vector<Expression> v(1, e);
-							free($2);	// malloced in basic.l
-							$$ = new Print(v);
-						}
+	PRINT exprList		{ $$ = new Print($2); }
+;
+
+exprList:
+	expr					{ $$ = new std::vector<Expression*>(1, $1); }
+	| exprList COMMA expr	{
+								$1->push_back($3);
+								$$ = $1;
+							}
+;
+
+expr:
+	STRING			{
+						$$ = new StringExpression($1);
+						free($1);	// malloced in basic.l
+					}
+	| DOUBLE		{ $$ = new DoubleExpression($1); }
 ;
 
 %%
 
 int main(int argc, char **argv){
+	std::cout << "Welcome to BASIC!\n>";
 	do {
 		yyparse();
 	} while( !feof(yyin) );
@@ -79,5 +99,5 @@ int main(int argc, char **argv){
 }
 
 void yyerror(const char *s){
-	cout << "Error: " << s << endl;
+	std::cout << "Error: " << s << std::endl;
 }

@@ -13,6 +13,7 @@ public:
 	void add(int index, const Program *program);		// add a new line to the program
 	void list();										// list out all the existing lines
 	void execute();										// run the program
+	void remove(int index);								// remove program line
 	
 	static Basic *instance();							// access the singleton instance
 	

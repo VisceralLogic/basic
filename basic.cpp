@@ -9,14 +9,19 @@ Basic *Basic::b;
 // add a program line at index, overwriting if it exists
 void Basic::add(int index, const Program *program){
 	// see if index already exists, if so delete it
+	remove(index);
+	
+	lines.insert(std::pair<int, const Program *>(index, program));
+}
+
+// remove an existing line from the program
+void Basic::remove(int index){
 	map<int, const Program*>::iterator it = lines.find(index);
 	if( it != lines.end() ){
 		const Program *old = it->second;
 		delete old;
 		lines.erase(index);
-	}
-	
-	lines.insert(std::pair<int, const Program *>(index, program));
+	}	
 }
 
 // print out the program lines

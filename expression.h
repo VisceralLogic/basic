@@ -3,20 +3,13 @@
 
 #include <string>
 
-using std::string;
-
 /*
 Base class used for storing and evaluating data items
 */
 class Expression {
 public:
-	Expression(const char *text);		// our first implementation will take a string as input
-	
-	const string value() const;			// return the stored value
-	const string print() const;			// printable version
-	
-private:
-	string text;						// data storage
+	virtual const std::string value() const;			// return the stored value
+	virtual const std::string print() const;			// printable version
 };
 
 #endif
