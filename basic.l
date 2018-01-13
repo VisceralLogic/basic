@@ -25,7 +25,7 @@ DIGIT    [0-9]
 					yylval.sVal[strlen(yytext)-2] = '\0';	// terminate the string!
 					return STRING;
 				}
-(({DIGIT}+"."?)|("."{DIGIT}+)){DIGIT}*(E-?{DIGIT}+)*	{ yylval.dVal = atof(yytext); return DOUBLE; }
+(({DIGIT}+"."?)|("."{DIGIT}+)){DIGIT}*(E-?{DIGIT}+)?	{ yylval.dVal = atof(yytext); return DOUBLE; }
 PRINT			{ return PRINT; }
 RUN				{ return RUN; }
 LIST			{ return LIST; }
