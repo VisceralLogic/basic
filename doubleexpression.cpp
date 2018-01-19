@@ -6,11 +6,15 @@ DoubleExpression::DoubleExpression(double d){
 }
 
 // return the text value
-const std::string DoubleExpression::value() const{
+const std::string DoubleExpression::print() const{
 	return std::to_string(d);
 }
 
 // return a string for printing
-const std::string DoubleExpression::print() const{
-	return value();
+const std::string DoubleExpression::list() const{
+	return print();
+}
+
+const double DoubleExpression::value() const{
+	return d;
 }

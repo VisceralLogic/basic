@@ -8,11 +8,13 @@
 
 class Program;
 class Expression;
+class DoubleExpression;
 
 #include "basic.tab.h"
 
 %}
 
+ALPHA    [A-Z]	
 DIGIT    [0-9]
 
 %%
@@ -31,6 +33,16 @@ RUN				{ return RUN; }
 LIST			{ return LIST; }
 ,				{ return COMMA; }
 \n				{ std::cout << ">"; return ENDL; }
+{ALPHA}{DIGIT}?	{ yylval.sVal = strdup(yytext); return VAR; }
+\+				{ return PLUS; }
+-				{ return MINUS; }
+\*				{ return MULT; }
+\/				{ return DIV; }
+\^				{ return EXP; }
+SAVE			{ return SAVE; }
+UNSAVE			{ return UNSAVE; }
+NEW				{ return NEW; }
+OLD				{ return OLD; }
 .	;			// skip any characters that aren't part of a recognized pattern
 
 %%

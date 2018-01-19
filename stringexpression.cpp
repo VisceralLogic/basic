@@ -6,11 +6,11 @@ StringExpression::StringExpression(const char *text){
 }
 
 // return the text value
-const std::string StringExpression::value() const{
+const std::string StringExpression::print() const{
 	return text;
 }
 
 // return a string for printing
-const std::string StringExpression::print() const{
+const std::string StringExpression::list() const{
 	return '"' + text + '"';
 }

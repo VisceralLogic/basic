@@ -8,8 +8,8 @@ Base class used for storing and evaluating data items
 */
 class Expression {
 public:
-	virtual const std::string value() const;			// return the stored value
-	virtual const std::string print() const;			// printable version
+	virtual const std::string print() const;		// return a string version for PRINT
+	virtual const std::string list() const;			// printable version suitable for LIST
 };
 
 #endif

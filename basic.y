@@ -16,6 +16,7 @@ void yyerror(const char *s);
 #include "expression.h"
 #include "stringexpression.h"
 #include "doubleexpression.h"
+#include "operatorexpression.h"
 #include "print.h"
 #include "program.h"
 
@@ -28,6 +29,7 @@ void yyerror(const char *s);
 	char *sVal;
 	Program *progVal;
 	Expression *eVal;
+	DoubleExpression *dxVal;
 	std::vector<Expression*> *eList;
 }
 
@@ -37,16 +39,31 @@ void yyerror(const char *s);
 %token ENDL
 %token LIST
 %token COMMA
+%token PLUS
+%token MINUS
+%token MULT
+%token DIV
+%token EXP
+%token SAVE
+%token UNSAVE
+%token NEW
+%token OLD
 
 // terminal symbols
 %token <iVal> LINE
 %token <sVal> STRING
 %token <dVal> DOUBLE
+%token <sVal> VAR
 
 // non-terminal symbols
 %type <progVal> program 
 %type <eList> exprList
 %type <eVal> expr
+%type <dxVal> doubleExpr
+%type <dxVal> addExpr
+%type <dxVal> mulExpr
+%type <dxVal> expExpr
+%type <dxVal> term
 
 %% /* Grammar rules and actions follow */
 
@@ -84,7 +101,31 @@ expr:
 						$$ = new StringExpression($1);
 						free($1);	// malloced in basic.l
 					}
-	| DOUBLE		{ $$ = new DoubleExpression($1); }
+	| doubleExpr
+	
+doubleExpr:
+	addExpr
+;
+
+addExpr:
+	mulExpr
+	| mulExpr PLUS mulExpr	{ $$ = new OperatorExpression($1, $3, '+'); }
+	| mulExpr MINUS mulExpr	{ $$ = new OperatorExpression($1, $3, '-'); }
+;
+
+mulExpr:
+	expExpr
+	| expExpr MULT expExpr	{ $$ = new OperatorExpression($1, $3, '*'); }
+	| expExpr DIV expExpr	{ $$ = new OperatorExpression($1, $3, '/'); }
+;
+
+expExpr:
+	term
+	| term EXP term			{ $$ = new OperatorExpression($1, $3, '^'); }
+;
+
+term:
+	DOUBLE			{ $$ = new DoubleExpression($1); }
 ;
 
 %%
