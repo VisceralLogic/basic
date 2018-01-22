@@ -17,8 +17,10 @@ void yyerror(const char *s);
 #include "stringexpression.h"
 #include "doubleexpression.h"
 #include "operatorexpression.h"
+#include "variableexpression.h"
 #include "print.h"
 #include "program.h"
+#include "let.h"
 
 %}
 
@@ -48,6 +50,8 @@ void yyerror(const char *s);
 %token UNSAVE
 %token NEW
 %token OLD
+%token LET
+%token EQUAL
 
 // terminal symbols
 %token <iVal> LINE
@@ -85,7 +89,11 @@ stmt:
 ;
 
 program:
-	PRINT exprList		{ $$ = new Print($2); }
+	PRINT exprList			{ $$ = new Print($2); }
+	| LET VAR EQUAL doubleExpr	{
+									$$ = new Let($2, $4);
+									free($2);	// malloced in basic.l
+								}
 ;
 
 exprList:
@@ -126,6 +134,10 @@ expExpr:
 
 term:
 	DOUBLE			{ $$ = new DoubleExpression($1); }
+	| VAR			{
+						$$ = new VariableExpression($1);
+						free($1);
+					}
 ;
 
 %%

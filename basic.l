@@ -43,6 +43,8 @@ SAVE			{ return SAVE; }
 UNSAVE			{ return UNSAVE; }
 NEW				{ return NEW; }
 OLD				{ return OLD; }
+LET				{ return LET; }
+\=				{ return EQUAL; }
 .	;			// skip any characters that aren't part of a recognized pattern
 
 %%

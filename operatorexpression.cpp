@@ -21,7 +21,7 @@ const std::string OperatorExpression::list() const{
 	return a->list() + op + b->list();
 }
 
-const double OperatorExpression::value() const{
+double OperatorExpression::value() const{
 	switch( op ){
 		case '+':
 			return a->value() + b->value();

@@ -15,6 +15,7 @@ const std::string DoubleExpression::list() const{
 	return print();
 }
 
-const double DoubleExpression::value() const{
+// return the value
+double DoubleExpression::value() const{
 	return d;
 }

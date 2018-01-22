@@ -13,7 +13,7 @@ public:
 	
 	const std::string print() const;		// return the stored value
 	const std::string list() const;			// printable version
-	const double value() const;				// value of performed operation
+	double value() const;					// value of performed operation
 
 private:
 	DoubleExpression *a, *b;				// expressions on which to operate
