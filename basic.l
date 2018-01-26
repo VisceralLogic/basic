@@ -1,4 +1,4 @@
-%option noyywrap case-insensitive
+%option case-insensitive
 
 %{
 #include <cstdio>
@@ -32,7 +32,11 @@ PRINT			{ return PRINT; }
 RUN				{ return RUN; }
 LIST			{ return LIST; }
 ,				{ return COMMA; }
-\n				{ std::cout << ">"; return ENDL; }
+\n				{
+					if( yyin == stdin )
+						std::cout << ">";
+					return ENDL;
+				}
 {ALPHA}{DIGIT}?	{ yylval.sVal = strdup(yytext); return VAR; }
 \+				{ return PLUS; }
 -				{ return MINUS; }

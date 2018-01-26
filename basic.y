@@ -9,6 +9,7 @@
 extern "C" int yylex();
 extern "C" int yyparse();
 extern "C" FILE *yyin;
+extern "C" int yywrap();
 
 void yyerror(const char *s);
 
@@ -85,7 +86,11 @@ stmt:
 	LINE				{ Basic::instance()->remove($1); }
 	| LINE program		{ Basic::instance()->add($1, $2); }
 	| RUN				{ Basic::instance()->execute(); }
-	| LIST				{ Basic::instance()->list(); }
+	| LIST				{ Basic::instance()->list(std::cout); }
+	| NEW				{ Basic::instance()->newProgram(); }
+	| OLD				{ Basic::instance()->oldProgram(); }
+	| SAVE				{ Basic::instance()->saveProgram(); }
+	| UNSAVE			{ Basic::instance()->unsaveProgram(); }
 ;
 
 program:
@@ -143,7 +148,9 @@ term:
 %%
 
 int main(int argc, char **argv){
-	std::cout << "Welcome to BASIC!\n>";
+	std::cout << "Welcome to BASIC!\n";
+	Basic::instance()->newProgram();
+	std::cout << '>';
 	do {
 		yyparse();
 	} while( !feof(yyin) );
@@ -153,4 +160,12 @@ int main(int argc, char **argv){
 
 void yyerror(const char *s){
 	std::cout << "Error: " << s << std::endl;
+}
+
+int yywrap(){
+	if( yyin == stdin )
+		return 1;
+	fclose(yyin);
+	yyin = stdin;
+	return 0;
 }

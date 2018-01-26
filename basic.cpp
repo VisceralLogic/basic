@@ -1,6 +1,9 @@
-#include <iostream>
+#include <fstream>
+#include <cstdio>
 
 #include "basic.h"
+
+extern "C" FILE *yyin;
 
 using std::map;
 using std::string;
@@ -27,11 +30,11 @@ void Basic::remove(int index){
 }
 
 // print out the program lines
-void Basic::list(){
+void Basic::list(std::ostream &out){
 	for( map<int, const Program *>::iterator it = lines.begin(); it!= lines.end(); ++it ){
-		std::cout << it->first << " ";
-		it->second->list(std::cout);
-		std::cout << std::endl;
+		out << it->first << " ";
+		it->second->list(out);
+		out << std::endl;
 	}
 }
 
@@ -66,4 +69,44 @@ double Basic::resolve(string var){
 	if( it != vars.end() ){
 		return it->second;
 	}
+}
+
+// save active program to disk
+void Basic::saveProgram(){
+	std::ofstream out;
+	out.open(name + ".bas");
+	list(out);
+}
+
+// delete saved program from disk
+void Basic::unsaveProgram(){
+	::remove((name + ".bas").c_str());
+}
+
+// start a new program
+void Basic::newProgram(){
+	erase();
+	std::cout << "Enter a program name: ";
+	std::cin >> name;
+	std::cin.ignore();	// consume the newline character
+}
+
+// load program from disk
+void Basic::oldProgram(){
+	erase();
+	std::cout << "Enter program to read: ";
+	std::cin >> name;
+	yyin = fopen((name + ".bas").c_str(), "r");
+	if( !yyin ){
+		std::cout << "ERROR: could not read file: " << name << ".bas\n";
+		yyin = stdin;
+	}
+}
+
+// clear stored program lines
+void Basic::erase(){
+	for( map<int, const Program *>::iterator it = lines.begin(); it!= lines.end(); ++it ){
+		delete it->second;
+	}
+	lines.clear();
 }
