@@ -9,14 +9,15 @@ all:	basic.tab.c lex.yy.c \
 		doubleexpression.h doubleexpression.cpp \
 		operatorexpression.h operatorexpression.cpp \
 		let.h let.cpp \
-		variableexpression.h variableexpression.cpp
+		variableexpression.h variableexpression.cpp \
+		parenexpression.h parenexpression.cpp
 	g++ basic.tab.c lex.yy.c program.cpp basic.cpp print.cpp expression.cpp \
 	stringexpression.cpp doubleexpression.cpp operatorexpression.cpp let.cpp \
-	variableexpression.cpp \
+	variableexpression.cpp parenexpression.cpp \
 	-o basic
 
 basic.tab.c: basic.y basic.h expression.h stringexpression.h doubleexpression.h \
-		operatorexpression.h print.h program.h let.h
+		operatorexpression.h print.h program.h let.h variableexpression.h parenexpression.h
 	bison -d basic.y
 	
 basic.tab.h: basic.y

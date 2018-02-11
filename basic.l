@@ -49,6 +49,8 @@ NEW				{ return NEW; }
 OLD				{ return OLD; }
 LET				{ return LET; }
 \=				{ return EQUAL; }
+\(				{ return OPENPAREN; }
+\)				{ return CLOSEPAREN; }
 .	;			// skip any characters that aren't part of a recognized pattern
 
 %%

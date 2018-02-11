@@ -19,6 +19,7 @@ void yyerror(const char *s);
 #include "doubleexpression.h"
 #include "operatorexpression.h"
 #include "variableexpression.h"
+#include "parenexpression.h"
 #include "print.h"
 #include "program.h"
 #include "let.h"
@@ -53,6 +54,8 @@ void yyerror(const char *s);
 %token OLD
 %token LET
 %token EQUAL
+%token OPENPAREN
+%token CLOSEPAREN
 
 // terminal symbols
 %token <iVal> LINE
@@ -143,6 +146,7 @@ term:
 						$$ = new VariableExpression($1);
 						free($1);
 					}
+	| OPENPAREN addExpr CLOSEPAREN	{ $$ = new ParenExpression($2); }
 ;
 
 %%
