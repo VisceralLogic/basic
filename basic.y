@@ -23,6 +23,8 @@ void yyerror(const char *s);
 #include "print.h"
 #include "program.h"
 #include "let.h"
+#include "goto.h"
+#include "end.h"
 
 %}
 
@@ -53,12 +55,14 @@ void yyerror(const char *s);
 %token NEW
 %token OLD
 %token LET
+%token GOTO
+%token END
 %token EQUAL
 %token OPENPAREN
 %token CLOSEPAREN
 
 // terminal symbols
-%token <iVal> LINE
+%token <iVal> INT
 %token <sVal> STRING
 %token <dVal> DOUBLE
 %token <sVal> VAR
@@ -86,8 +90,8 @@ line:
 ;
 
 stmt:
-	LINE				{ Basic::instance()->remove($1); }
-	| LINE program		{ Basic::instance()->add($1, $2); }
+	INT					{ Basic::instance()->remove($1); }
+	| INT program		{ Basic::instance()->add($1, $2); }
 	| RUN				{ Basic::instance()->execute(); }
 	| LIST				{ Basic::instance()->list(std::cout); }
 	| NEW				{ Basic::instance()->newProgram(); }
@@ -102,6 +106,8 @@ program:
 									$$ = new Let($2, $4);
 									free($2);	// malloced in basic.l
 								}
+	| GOTO INT				{ $$ = new Goto($2); }
+	| END					{ $$ = new End(); }
 ;
 
 exprList:
@@ -142,6 +148,7 @@ expExpr:
 
 term:
 	DOUBLE			{ $$ = new DoubleExpression($1); }
+	| INT			{ $$ = new DoubleExpression($1); }
 	| VAR			{
 						$$ = new VariableExpression($1);
 						free($1);

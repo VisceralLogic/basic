@@ -20,14 +20,14 @@ DIGIT    [0-9]
 %%
 
 [ \t]+	;		// skip white space
-^{DIGIT}+		{ yylval.iVal = atoi(yytext); return LINE; }
+{DIGIT}+		{ yylval.iVal = atoi(yytext); return INT; }
 \"[^\"\n]*\"	{	// remove the quote marks from either end
 					yylval.sVal = (char *)malloc(sizeof(char)*strlen(yytext)-1);
 					strncpy(yylval.sVal, yytext+1, strlen(yytext)-2);
 					yylval.sVal[strlen(yytext)-2] = '\0';	// terminate the string!
 					return STRING;
 				}
-(({DIGIT}+"."?)|("."{DIGIT}+)){DIGIT}*(E-?{DIGIT}+)?	{ yylval.dVal = atof(yytext); return DOUBLE; }
+(({DIGIT}+".")|("."{DIGIT}+)){DIGIT}*(E-?{DIGIT}+)?	{ yylval.dVal = atof(yytext); return DOUBLE; }
 PRINT			{ return PRINT; }
 RUN				{ return RUN; }
 LIST			{ return LIST; }
@@ -48,6 +48,8 @@ UNSAVE			{ return UNSAVE; }
 NEW				{ return NEW; }
 OLD				{ return OLD; }
 LET				{ return LET; }
+GOTO			{ return GOTO; }
+END				{ return END; }
 \=				{ return EQUAL; }
 \(				{ return OPENPAREN; }
 \)				{ return CLOSEPAREN; }

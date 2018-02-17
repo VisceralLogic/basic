@@ -40,9 +40,9 @@ void Basic::list(std::ostream &out){
 
 // run the program
 void Basic::execute(){
-	for( map<int, const Program*>::iterator it = lines.begin(); it != lines.end(); ++it ){
-		it->second->execute();
-	}
+	counter = lines.begin();
+	while( counter != lines.end() )
+		counter->second->execute();
 }
 
 // access the singleton instance, creating it if necessary
@@ -109,4 +109,18 @@ void Basic::erase(){
 		delete it->second;
 	}
 	lines.clear();
+}
+
+// jump to program line
+void Basic::gotoLine(int line){
+	counter = lines.find(line);
+}
+
+// go to next program line
+void Basic::nextLine(){
+	++counter;
+}
+
+void Basic::endProgram(){
+	counter = lines.end();
 }

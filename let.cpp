@@ -13,6 +13,7 @@ Let::~Let(){
 // store the value of the Expression in the Basic vars map
 void Let::execute() const{
 	Basic::instance()->assign(var, expression->value());
+	Program::execute();
 }
 
 // list this LET statement

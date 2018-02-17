@@ -21,6 +21,9 @@ public:
 	void unsaveProgram();								// delete saved program from disk
 	void newProgram();									// start a new program
 	void oldProgram();									// load program from disk
+	void gotoLine(int line);							// jump to program line
+	void nextLine();									// go to next program line
+	void endProgram();									// end execution
 	
 	static Basic *instance();							// access the singleton instance
 
@@ -33,6 +36,7 @@ private:
 	std::map<int, const Program*> lines;				// store the lines in a map
 	std::map<std::string, double> vars;					// store variables
 	std::string name;									// name of active program
+	std::map<int, const Program*>::iterator counter;	// program line to run next
 	
 	static Basic *b;									// singleton instance
 };

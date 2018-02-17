@@ -16,6 +16,7 @@ void Print::execute() const{
 		cout << exprList->at(i)->print() << ' ';
 	}
 	cout << exprList->at(exprList->size()-1)->print() << endl;
+	Program::execute();
 }
 
 // lists the expressions, as they were originally given

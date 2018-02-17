@@ -1,7 +1,9 @@
 #include "program.h"
+#include "basic.h"
 
-// nothing to do in the base class
+// advance to next line
 void Program::execute() const{
+	Basic::instance()->nextLine();
 }
 
 // if you ever see this, something is wrong
