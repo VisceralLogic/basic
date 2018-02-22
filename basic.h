@@ -21,6 +21,9 @@ public:
 	void unsaveProgram();								// delete saved program from disk
 	void newProgram();									// start a new program
 	void oldProgram();									// load program from disk
+	void erase();										// clear stored program lines
+	void renameProgram();								// rename the current program
+	void catalogPrograms();								// list saved programs
 	void gotoLine(int line);							// jump to program line
 	void nextLine();									// go to next program line
 	void endProgram();									// end execution
@@ -31,8 +34,6 @@ public:
 	double resolve(std::string var);					// return variable value
 	
 private:
-	void erase();										// clear stored program lines
-	
 	std::map<int, const Program*> lines;				// store the lines in a map
 	std::map<std::string, double> vars;					// store variables
 	std::string name;									// name of active program

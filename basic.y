@@ -54,6 +54,9 @@ void yyerror(const char *s);
 %token UNSAVE
 %token NEW
 %token OLD
+%token CATALOG
+%token SCRATCH
+%token RENAME
 %token LET
 %token GOTO
 %token END
@@ -98,6 +101,9 @@ stmt:
 	| OLD				{ Basic::instance()->oldProgram(); }
 	| SAVE				{ Basic::instance()->saveProgram(); }
 	| UNSAVE			{ Basic::instance()->unsaveProgram(); }
+	| CATALOG			{ Basic::instance()->catalogPrograms(); }
+	| SCRATCH			{ Basic::instance()->erase(); }
+	| RENAME			{ Basic::instance()->renameProgram(); }
 ;
 
 program:

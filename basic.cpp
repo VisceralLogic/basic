@@ -1,5 +1,8 @@
 #include <fstream>
 #include <cstdio>
+#include <set>
+#include <unistd.h>
+#include <sys/dir.h>
 
 #include "basic.h"
 
@@ -86,9 +89,36 @@ void Basic::unsaveProgram(){
 // start a new program
 void Basic::newProgram(){
 	erase();
+	renameProgram();
+}
+
+// rename the current program
+void Basic::renameProgram(){
 	std::cout << "Enter a program name: ";
 	std::cin >> name;
 	std::cin.ignore();	// consume the newline character
+}
+
+// list saved programs
+void Basic::catalogPrograms(){
+	char cwd[FILENAME_MAX];
+	getcwd(cwd, FILENAME_MAX);
+
+    DIR* dirp = opendir(cwd);
+    struct dirent * dp;
+    std::set<std::string> set;	// store in a set to get alphabetical ordering
+    while ((dp = readdir(dirp)) != NULL) {
+    	char *sub = strstr(dp->d_name, ".bas");
+        if( strstr(dp->d_name, ".bas") ){
+        	sub[0] = 0;		// end name before .bas
+        	set.insert(dp->d_name);
+        }
+    }
+    closedir(dirp);
+    // print them out
+    for( std::set<std::string>::iterator it = set.begin(); it != set.end(); ++it ){
+    	std::cout << *it << std::endl;
+    }
 }
 
 // load program from disk
@@ -121,6 +151,7 @@ void Basic::nextLine(){
 	++counter;
 }
 
+// end program execution
 void Basic::endProgram(){
 	counter = lines.end();
 }
