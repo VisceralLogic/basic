@@ -3,6 +3,7 @@
 %{
 #include <cstdio>
 #include <iostream>
+#include <vector>
 
 #define YY_DECL extern "C" int yylex()
 
@@ -53,7 +54,14 @@ RENAME			{ return RENAME; }
 LET				{ return LET; }
 GOTO			{ return GOTO; }
 END				{ return END; }
+IF				{ return IF; }
+THEN			{ return THEN; }
 \=				{ return EQUAL; }
+\<				{ return LESS; }
+\>				{ return GREATER; }
+\<\=			{ return LESSEQUAL; }
+\>\=			{ return GREATEREQUAL; }
+\<\>			{ return NOTEQUAL; }
 \(				{ return OPENPAREN; }
 \)				{ return CLOSEPAREN; }
 .	;			// skip any characters that aren't part of a recognized pattern

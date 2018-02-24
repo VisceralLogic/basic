@@ -12,15 +12,16 @@ all:	basic.tab.c lex.yy.c \
 		variableexpression.h variableexpression.cpp \
 		parenexpression.h parenexpression.cpp \
 		goto.h goto.cpp \
-		end.h end.cpp
-	g++ basic.tab.c lex.yy.c program.cpp basic.cpp print.cpp expression.cpp \
+		end.h end.cpp \
+		ifthen.h ifthen.cpp
+	g++ -std=c++11 basic.tab.c lex.yy.c program.cpp basic.cpp print.cpp expression.cpp \
 	stringexpression.cpp doubleexpression.cpp operatorexpression.cpp let.cpp \
-	variableexpression.cpp parenexpression.cpp goto.cpp end.cpp \
+	variableexpression.cpp parenexpression.cpp goto.cpp end.cpp ifthen.cpp \
 	-o basic
 
 basic.tab.c: basic.y basic.h expression.h stringexpression.h doubleexpression.h \
 		operatorexpression.h print.h program.h let.h variableexpression.h parenexpression.h \
-		goto.h end.h
+		goto.h end.h ifthen.h
 	bison -d basic.y
 	
 basic.tab.h: basic.y

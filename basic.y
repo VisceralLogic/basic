@@ -25,6 +25,7 @@ void yyerror(const char *s);
 #include "let.h"
 #include "goto.h"
 #include "end.h"
+#include "ifthen.h"
 
 %}
 
@@ -59,8 +60,15 @@ void yyerror(const char *s);
 %token RENAME
 %token LET
 %token GOTO
+%token IF
+%token THEN
 %token END
 %token EQUAL
+%token LESS
+%token GREATER
+%token LESSEQUAL
+%token GREATEREQUAL
+%token NOTEQUAL
 %token OPENPAREN
 %token CLOSEPAREN
 
@@ -79,6 +87,7 @@ void yyerror(const char *s);
 %type <dxVal> mulExpr
 %type <dxVal> expExpr
 %type <dxVal> term
+%type <sVal> comp
 
 %% /* Grammar rules and actions follow */
 
@@ -114,6 +123,17 @@ program:
 								}
 	| GOTO INT				{ $$ = new Goto($2); }
 	| END					{ $$ = new End(); }
+	| IF doubleExpr comp doubleExpr THEN INT
+							{ $$ = new IfThen($2, $4, $3, $6); }
+;
+
+comp:
+	EQUAL					{ $$ = "="; }
+	| LESS					{ $$ = "<"; }
+	| GREATER				{ $$ = ">"; }
+	| LESSEQUAL				{ $$ = "<="; }
+	| GREATEREQUAL			{ $$ = ">="; }
+	| NOTEQUAL				{ $$ = "<>"; }
 ;
 
 exprList:
