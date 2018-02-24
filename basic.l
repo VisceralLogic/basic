@@ -18,6 +18,7 @@
 \"[^\"\n]*\"	{	// remove the quote marks from either end
 					yylval.sVal = (char *)malloc(sizeof(char)*strlen(yytext)-1);
 					strncpy(yylval.sVal, yytext+1, strlen(yytext)-2);
+					yylval.sVal[strlen(yytext)-2] = '\0';	// terminate the string!
 					return STRING;
 				}
 PRINT			{ return PRINT; }
