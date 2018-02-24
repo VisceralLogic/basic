@@ -3,6 +3,7 @@
 %{
 #include <cstdio>
 #include <iostream>
+#include <vector>
 
 #define YY_DECL extern "C" int yylex()
 

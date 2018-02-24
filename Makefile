@@ -7,7 +7,7 @@ all:	basic.tab.c lex.yy.c \
 		expression.h expression.cpp \
 		stringexpression.h stringexpression.cpp \
 		doubleexpression.h doubleexpression.cpp
-	g++ basic.tab.c lex.yy.c program.cpp basic.cpp print.cpp expression.cpp \
+	g++ -std=c++11 basic.tab.c lex.yy.c program.cpp basic.cpp print.cpp expression.cpp \
 	stringexpression.cpp doubleexpression.cpp \
 	-o basic
 
