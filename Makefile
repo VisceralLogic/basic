@@ -13,7 +13,7 @@ all:	basic.tab.c lex.yy.c \
 		parenexpression.h parenexpression.cpp \
 		goto.h goto.cpp \
 		end.h end.cpp
-	g++ basic.tab.c lex.yy.c program.cpp basic.cpp print.cpp expression.cpp \
+	g++ -std=c++11 basic.tab.c lex.yy.c program.cpp basic.cpp print.cpp expression.cpp \
 	stringexpression.cpp doubleexpression.cpp operatorexpression.cpp let.cpp \
 	variableexpression.cpp parenexpression.cpp goto.cpp end.cpp \
 	-o basic

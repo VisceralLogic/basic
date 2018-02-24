@@ -1,5 +1,6 @@
 #include <fstream>
 #include <cstdio>
+#include <cstring>
 #include <set>
 #include <unistd.h>
 #include <sys/dir.h>
