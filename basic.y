@@ -26,6 +26,8 @@ void yyerror(const char *s);
 #include "goto.h"
 #include "end.h"
 #include "ifthen.h"
+#include "read.h"
+#include "data.h"
 
 %}
 
@@ -38,6 +40,8 @@ void yyerror(const char *s);
 	Expression *eVal;
 	DoubleExpression *dxVal;
 	std::vector<Expression*> *eList;
+	std::vector<std::string> *sList;
+	std::vector<double> *dList;
 }
 
 // constant tokens
@@ -71,6 +75,8 @@ void yyerror(const char *s);
 %token NOTEQUAL
 %token OPENPAREN
 %token CLOSEPAREN
+%token DATA
+%token READ
 
 // terminal symbols
 %token <iVal> INT
@@ -88,6 +94,8 @@ void yyerror(const char *s);
 %type <dxVal> expExpr
 %type <dxVal> term
 %type <sVal> comp
+%type <sList> stringList
+%type <dList> doubleList
 
 %% /* Grammar rules and actions follow */
 
@@ -125,6 +133,8 @@ program:
 	| END					{ $$ = new End(); }
 	| IF doubleExpr comp doubleExpr THEN INT
 							{ $$ = new IfThen($2, $4, $3, $6); }
+	| READ stringList		{ $$ = new Read(*$2); }
+	| DATA doubleList		{ $$ = new Data(*$2); }
 ;
 
 comp:
@@ -134,6 +144,27 @@ comp:
 	| LESSEQUAL				{ $$ = "<="; }
 	| GREATEREQUAL			{ $$ = ">="; }
 	| NOTEQUAL				{ $$ = "<>"; }
+;
+
+stringList:
+	VAR						{ $$ = new std::vector<std::string>(1, $1); }
+	| stringList COMMA VAR	{
+								$1->push_back($3);
+								$$ = $1;
+							}
+;
+
+doubleList:
+	DOUBLE						{ $$ = new std::vector<double>(1, $1); }
+	| INT						{ $$ = new std::vector<double>(1, $1); }
+	| doubleList COMMA DOUBLE	{
+									$1->push_back($3);
+									$$ = $1;
+								}
+	| doubleList COMMA INT		{
+									$1->push_back($3);
+									$$ = $1;
+								}
 ;
 
 exprList:

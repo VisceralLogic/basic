@@ -4,6 +4,8 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include <vector>
+#include <deque>
 
 #include "program.h"
 #include "doubleexpression.h"
@@ -27,6 +29,8 @@ public:
 	void gotoLine(int line);							// jump to program line
 	void nextLine();									// go to next program line
 	void endProgram();									// end execution
+	void read(std::string var);							// assign next data value to var
+	void pushData(std::vector<double> vals);			// push more values onto data vector
 	
 	static Basic *instance();							// access the singleton instance
 
@@ -38,6 +42,7 @@ private:
 	std::map<std::string, double> vars;					// store variables
 	std::string name;									// name of active program
 	std::map<int, const Program*>::iterator counter;	// program line to run next
+	std::deque<double> data;							// stored data block for READ
 	
 	static Basic *b;									// singleton instance
 };

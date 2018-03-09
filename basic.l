@@ -56,6 +56,8 @@ GOTO			{ return GOTO; }
 END				{ return END; }
 IF				{ return IF; }
 THEN			{ return THEN; }
+DATA			{ return DATA; }
+READ			{ return READ; }
 \=				{ return EQUAL; }
 \<				{ return LESS; }
 \>				{ return GREATER; }

@@ -10,6 +10,7 @@ class Program{
 public:
 	virtual void execute() const;				// run this line of the program
 	virtual void list(std::ostream& os) const;	// list this line
+	virtual void preExecute() const;			// run before main program execution
 };
 
 #endif

@@ -44,6 +44,11 @@ void Basic::list(std::ostream &out){
 
 // run the program
 void Basic::execute(){
+	data.clear();	// clear any existing stored data
+	for( map<int, const Program *>::iterator it = lines.begin(); it!= lines.end(); ++it ){
+		it->second->preExecute();
+	}
+	
 	counter = lines.begin();
 	while( counter != lines.end() )
 		counter->second->execute();
@@ -155,4 +160,17 @@ void Basic::nextLine(){
 // end program execution
 void Basic::endProgram(){
 	counter = lines.end();
+}
+
+// assign next data value to var
+void Basic::read(std::string var){
+	assign(var, data.front());
+	data.pop_front();
+}
+
+// push more values onto data vector
+void Basic::pushData(std::vector<double> vals){
+	for( std::vector<double>::iterator it = vals.begin(); it != vals.end(); ++it ){
+		data.push_back(*it);
+	}
 }
