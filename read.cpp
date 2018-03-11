@@ -15,8 +15,11 @@ void Read::execute() const{
 
 // list this line
 void Read::list(std::ostream& os) const{
-	os << "READ";
-	for( std::vector<std::string>::const_iterator it = vars.cbegin(); it != vars.cend(); ++it ){
-		os << ' ' << *it;
+	os << "READ ";
+	std::vector<std::string>::const_iterator it = vars.cbegin();
+	os << *it;		// print out first value
+	for(  ++it; it != vars.cend(); ++it ){
+		os << ", " << *it;	// print out remaining values
 	}
+
 }
