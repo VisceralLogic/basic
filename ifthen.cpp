@@ -38,6 +38,8 @@ void IfThen::execute() const{
 	
 	if( result )
 		Basic::instance()->gotoLine(line);
+	else
+		Program::execute();
 }
 
 // list this line
