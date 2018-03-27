@@ -10,7 +10,8 @@ OperatorExpression::OperatorExpression(DoubleExpression *a, DoubleExpression *b,
 
 OperatorExpression::~OperatorExpression(){
 	delete a;
-	delete b;
+	if( b != NULL )
+		delete b;
 }
 
 const std::string OperatorExpression::print() const{
@@ -18,7 +19,10 @@ const std::string OperatorExpression::print() const{
 }
 
 const std::string OperatorExpression::list() const{
-	return a->list() + op + b->list();
+	if( op != 'n' )
+		return a->list() + op + b->list();
+	else
+		return "-" + a->list();
 }
 
 double OperatorExpression::value() const{
@@ -33,5 +37,7 @@ double OperatorExpression::value() const{
 			return a->value() / b->value();
 		case '^':
 			return exp(log(a->value()) * b->value());
+		case 'n':
+			return -a->value();
 	}
 }

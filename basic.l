@@ -58,6 +58,10 @@ IF				{ return IF; }
 THEN			{ return THEN; }
 DATA			{ return DATA; }
 READ			{ return READ; }
+FOR				{ return FOR; }
+TO				{ return TO; }
+STEP			{ return STEP; }
+NEXT			{ return NEXT; }
 \=				{ return EQUAL; }
 \<				{ return LESS; }
 \>				{ return GREATER; }

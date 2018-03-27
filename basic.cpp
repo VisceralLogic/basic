@@ -157,6 +157,14 @@ void Basic::nextLine(){
 	++counter;
 }
 
+// go to program line
+void Basic::gotoProgram(const Program *program){
+	for( map<int, const Program *>::iterator it = lines.begin(); it!= lines.end(); ++it ){
+		if( it->second == program )
+			counter = it;
+	}
+}
+
 // end program execution
 void Basic::endProgram(){
 	counter = lines.end();
@@ -173,4 +181,16 @@ void Basic::pushData(std::vector<double> vals){
 	for( std::vector<double>::iterator it = vals.begin(); it != vals.end(); ++it ){
 		data.push_back(*it);
 	}
+}
+
+// push a FOR loop onto the stack
+void Basic::pushFor(const For *forLoop){
+	forLoops.push(forLoop);
+}
+
+// pop last FOR off the stack
+const For* Basic::popFor(){
+	const For *loop = forLoops.top();
+	forLoops.pop();
+	return loop;
 }

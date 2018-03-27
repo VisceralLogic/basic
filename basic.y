@@ -28,6 +28,8 @@ void yyerror(const char *s);
 #include "ifthen.h"
 #include "read.h"
 #include "data.h"
+#include "for.h"
+#include "next.h"
 
 %}
 
@@ -77,6 +79,10 @@ void yyerror(const char *s);
 %token CLOSEPAREN
 %token DATA
 %token READ
+%token FOR
+%token TO
+%token STEP
+%token NEXT
 
 // terminal symbols
 %token <iVal> INT
@@ -126,15 +132,22 @@ stmt:
 program:
 	PRINT exprList			{ $$ = new Print($2); }
 	| LET VAR EQUAL doubleExpr	{
-									$$ = new Let($2, $4);
-									free($2);	// malloced in basic.l
-								}
+								$$ = new Let($2, $4);
+								free($2);	// malloced in basic.l
+							}
 	| GOTO INT				{ $$ = new Goto($2); }
 	| END					{ $$ = new End(); }
 	| IF doubleExpr comp doubleExpr THEN INT
 							{ $$ = new IfThen($2, $4, $3, $6); }
 	| READ stringList		{ $$ = new Read(*$2); }
 	| DATA doubleList		{ $$ = new Data(*$2); }
+	| FOR VAR EQUAL doubleExpr TO doubleExpr {
+								$$ = new For($4, $6, NULL, $2);
+							}
+	| FOR VAR EQUAL doubleExpr TO doubleExpr STEP doubleExpr {
+								$$ = new For($4, $6, $8, $2);
+							}
+	| NEXT VAR				{ $$ = new Next($2); }
 ;
 
 comp:
@@ -196,6 +209,7 @@ mulExpr:
 	expExpr
 	| expExpr MULT expExpr	{ $$ = new OperatorExpression($1, $3, '*'); }
 	| expExpr DIV expExpr	{ $$ = new OperatorExpression($1, $3, '/'); }
+	| MINUS expExpr			{ $$ = new OperatorExpression($2, NULL, 'n'); }
 ;
 
 expExpr:
