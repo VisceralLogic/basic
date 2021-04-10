@@ -30,7 +30,7 @@ DIGIT    [0-9]
 				}
 (({DIGIT}+"."?)|("."{DIGIT}+)){DIGIT}*(E-?{DIGIT}+)?	{ yylval.dVal = atof(yytext); return DOUBLE; }
 PRINT			{ return PRINT; }
-REM.*		{ yylval.sVal = strndup(yytext, 512); printf("DEBUG: REM.* yytext=%s\n", yytext); return REMARK; }
+REM.*			{ yylval.sVal = strndup(yytext, 512); return REMARK; }
 RUN				{ return RUN; }
 LIST			{ return LIST; }
 ,				{ return COMMA; }

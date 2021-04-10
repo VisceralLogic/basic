@@ -133,7 +133,7 @@ stmt:
 
 program:
 	PRINT exprList			{ $$ = new Print($2); }
-	| REMARK 			{ $$ = new Rem($1); printf("DEBUG: program REMARK $1 = %s\n", $1); }
+	| REMARK 				{ $$ = new Rem($1); }
 	| LET VAR EQUAL doubleExpr	{
 								$$ = new Let($2, $4);
 								free($2);	// malloced in basic.l

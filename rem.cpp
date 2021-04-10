@@ -11,7 +11,6 @@ Rem::Rem(const char* remark) : remark_(remark) {
 // run this line of the program
 void Rem::execute() const{
    // Do nothing - it is just a comment.
-   cout << "DEBUG: Rem::execute() - ignoring remark: " << remark_ << endl;
    Program::execute();
 }
 
