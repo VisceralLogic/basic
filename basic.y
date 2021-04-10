@@ -21,6 +21,7 @@ void yyerror(const char *s);
 #include "variableexpression.h"
 #include "parenexpression.h"
 #include "print.h"
+#include "rem.h"
 #include "program.h"
 #include "let.h"
 #include "goto.h"
@@ -89,6 +90,7 @@ void yyerror(const char *s);
 %token <sVal> STRING
 %token <dVal> DOUBLE
 %token <sVal> VAR
+%token <sVal> REMARK
 
 // non-terminal symbols
 %type <progVal> program 
@@ -131,6 +133,7 @@ stmt:
 
 program:
 	PRINT exprList			{ $$ = new Print($2); }
+	| REMARK 			{ $$ = new Rem($1); printf("DEBUG: program REMARK $1 = %s\n", $1); }
 	| LET VAR EQUAL doubleExpr	{
 								$$ = new Let($2, $4);
 								free($2);	// malloced in basic.l
