@@ -30,6 +30,7 @@ DIGIT    [0-9]
 				}
 (({DIGIT}+"."?)|("."{DIGIT}+)){DIGIT}*(E-?{DIGIT}+)?	{ yylval.dVal = atof(yytext); return DOUBLE; }
 PRINT			{ return PRINT; }
+REM.*			{ yylval.sVal = strndup(yytext, 512); return REMARK; }
 RUN				{ return RUN; }
 LIST			{ return LIST; }
 ,				{ return COMMA; }
@@ -70,6 +71,6 @@ NEXT			{ return NEXT; }
 \<\>			{ return NOTEQUAL; }
 \(				{ return OPENPAREN; }
 \)				{ return CLOSEPAREN; }
-.	;			// skip any characters that aren't part of a recognized pattern
+.	;			/* skip any characters that aren't part of a recognized pattern */
 
 %%
