@@ -11,7 +11,7 @@ class Program;
 class Expression;
 class DoubleExpression;
 
-#include "basic.tab.h"
+#include "basic.tab.hpp"
 
 %}
 
