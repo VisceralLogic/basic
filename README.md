@@ -1,5 +1,6 @@
 # basic
-Tutorial on using flex/bison to build a BASIC interpreter
+Tutorial on using flex/bison to build a BASIC interpreter  
+https://www.viscerallogic.com/programming/blog/basic-interpreter-part-i/
 
 ## grammar
 statements: /* empty */  
